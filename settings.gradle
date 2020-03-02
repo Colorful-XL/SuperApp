@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':supersdk'
 rootProject.name='SuperApp'
