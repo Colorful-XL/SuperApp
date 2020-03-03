@@ -20,17 +20,19 @@ import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public abstract class BaseActivity extends AppCompatActivity {
-    public static String TAG;
+    public static String TAG ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BaseActivityPermissionsDispatcher.requestPermissionWithPermissionCheck(BaseActivity.this);
+        TAG = getComponentName().getShortClassName();
     }
     @NeedsPermission({Manifest.permission.CALL_PHONE,Manifest.permission.CAMERA,Manifest.permission.INTERNET,
             Manifest.permission.ACCESS_WIFI_STATE,Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.VIBRATE,Manifest.permission.WAKE_LOCK,Manifest.permission.VIBRATE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_NETWORK_STATE
     })
     public void requestPermission(){
 
@@ -41,7 +43,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @OnShowRationale({Manifest.permission.CALL_PHONE,Manifest.permission.CAMERA,Manifest.permission.INTERNET,
             Manifest.permission.ACCESS_WIFI_STATE,Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.VIBRATE,Manifest.permission.WAKE_LOCK,Manifest.permission.VIBRATE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_NETWORK_STATE
+
     })
     public void showDialog(final PermissionRequest request){
         new AlertDialog.Builder(this)
@@ -85,5 +89,35 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.i(TAG, "onRequestPermissionsResult requestCod = " + requestCode + ", grantResults = " + grantResults);
         BaseActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop()");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy()");
     }
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,6 +63,13 @@ public class HomeFragment extends BaseFragment  implements View.OnClickListener 
         mSearchView.setOnClickListener(this);
         mRecyclerView = mContentView.findViewById(R.id.home_recycler);
         mLoadingView = mContentView.findViewById(R.id.loading_view);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mAdapter.updateVideoInScrollView();
+            }
+        });
         AnimationDrawable anim = (AnimationDrawable) mLoadingView.getDrawable();
         anim.start();
     }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -17,7 +18,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private FragmentManager fm;
     private HomeFragment mHomeFragment = new HomeFragment();
     private Fragment mCommonFragmentOne;
-//    private MessageFragment mMessageFragment;
+    //    private MessageFragment mMessageFragment;
 //    private MineFragment mMineFragment;
     private Fragment mCurrent;
 
@@ -29,6 +30,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView mPondView;
     private TextView mMessageView;
     private TextView mMineView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,30 +38,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initView();
         fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.add(R.id.content_layout , mHomeFragment);
+        fragmentTransaction.add(R.id.content_layout, mHomeFragment);
         fragmentTransaction.commit();
 
     }
 
     private void initView() {
-        mHomeLayout = (RelativeLayout) findViewById(R.id.home_layout_view);
+        mHomeLayout = findViewById(R.id.home_layout_view);
         mHomeLayout.setOnClickListener(this);
-        mPondLayout = (RelativeLayout) findViewById(R.id.pond_layout_view);
+        mPondLayout =  findViewById(R.id.pond_layout_view);
         mPondLayout.setOnClickListener(this);
-        mMessageLayout = (RelativeLayout) findViewById(R.id.message_layout_view);
+        mMessageLayout = findViewById(R.id.message_layout_view);
         mMessageLayout.setOnClickListener(this);
-        mMineLayout = (RelativeLayout) findViewById(R.id.mine_layout_view);
+        mMineLayout = findViewById(R.id.mine_layout_view);
         mMineLayout.setOnClickListener(this);
 
-        mHomeView = (TextView) findViewById(R.id.home_image_view);
-        mPondView = (TextView) findViewById(R.id.fish_image_view);
-        mMessageView = (TextView) findViewById(R.id.message_image_view);
-        mMineView = (TextView) findViewById(R.id.mine_image_view);
+        mHomeView =  findViewById(R.id.home_image_view);
+        mPondView =  findViewById(R.id.fish_image_view);
+        mMessageView = findViewById(R.id.message_image_view);
+        mMineView = findViewById(R.id.mine_image_view);
         mHomeView.setBackgroundResource(R.drawable.comui_tab_home_selected);
     }
 
     @Override
     public void onClick(View v) {
-
+        //for test
+        if (v.getId() == R.id.mine_layout_view) {
+            startActivity(new Intent(this, TestActivity.class));
+        } else {
+            return;
+        }
     }
 }

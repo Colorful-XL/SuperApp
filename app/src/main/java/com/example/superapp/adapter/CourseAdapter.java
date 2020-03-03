@@ -1,7 +1,9 @@
 package com.example.superapp.adapter;
 
+import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -11,6 +13,9 @@ import com.example.superapp.R;
 import com.example.superapp.bean.recommand.RecommandBodyValue;
 import com.example.superapp.util.Util;
 import com.example.supersdk.ImageLoader.ImageLoader;
+import com.example.supersdk.player.AdContextInterface;
+import com.example.supersdk.player.VideoAdContext;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +27,8 @@ public class CourseAdapter extends BaseMultiItemQuickAdapter<RecommandBodyValue,
     private static final int CARD_TYPE_ONE = 0x01;//多图
     private static final int CARD_TYPE_TWO = 0x02;//单图
     private static final int CARD_TYPE_THREE = 0x03;//ViewPager
+
+    private VideoAdContext mAdsdkContext;
 
     public CourseAdapter(List<RecommandBodyValue> data) {
         super(data);
@@ -36,7 +43,28 @@ public class CourseAdapter extends BaseMultiItemQuickAdapter<RecommandBodyValue,
     protected void convert(BaseViewHolder helper, final RecommandBodyValue item) {
         switch (helper.getItemViewType()) {
             case VIDEO_TYPE: {
-                //暂不处理Video
+                ImageView logoView = helper.getView(R.id.item_logo_view);
+                ImageLoader.load(mContext, item.logo, logoView);
+                helper.setText(R.id.item_title_view, item.title);
+                helper.setText(R.id.item_info_view, item.info.concat(mContext.getString(R.string.tian_qian)));
+                helper.setText(R.id.item_footer_view, item.text);
+                //为对应布局创建播放器
+                RelativeLayout mVieoContentLayout = helper.getView(R.id.video_ad_layout);
+                mAdsdkContext = new VideoAdContext(mVieoContentLayout,
+                        new Gson().toJson(item), null);
+                mAdsdkContext.setAdResultListener(new AdContextInterface() {
+                    @Override
+                    public void onAdSuccess() {
+                    }
+
+                    @Override
+                    public void onAdFailed() {
+                    }
+
+                    @Override
+                    public void onClickVideo(String url) {
+                    }
+                });
                 break;
             }
             case CARD_TYPE_ONE: {
@@ -89,11 +117,11 @@ public class CourseAdapter extends BaseMultiItemQuickAdapter<RecommandBodyValue,
     /**
      * 自动播放方法
      */
-//    public void updateAdInScrollView(){
-//        if (mAdsdkContext != null) {
-//            mAdsdkContext.updateAdInScrollView();
-//        }
-//    }
+    public void updateVideoInScrollView(){
+        if (mAdsdkContext != null) {
+            mAdsdkContext.updateAdInScrollView();
+        }
+    }
 
     /**
      * 动态添加ImageView
